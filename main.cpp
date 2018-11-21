@@ -98,10 +98,17 @@ int main(int argc, char *argv[])
     }
 
     QmlFmt::Options options;
-    for (auto kvp = optionMap.constKeyValueBegin(); kvp != optionMap.constKeyValueEnd(); ++kvp)
-    {
-        if (parser.isSet((*kvp).second))
-            options |= (*kvp).first;
+    // for (auto kvp = optionMap.constKeyValueBegin(); kvp != optionMap.constKeyValueEnd(); ++kvp)
+    // {
+    //     if (parser.isSet((*kvp).second))
+    //         options |= (*kvp).first;
+    // }
+
+    QMapIterator<QmlFmt::Option, QCommandLineOption> kvp_iter(optionMap);
+    while (kvp_iter.hasNext()) {
+      kvp_iter.next();
+      if (parser.isSet(kvp_iter.value()))
+        options |= kvp_iter.key();
     }
 
     QmlFmt qmlFmt(options);
