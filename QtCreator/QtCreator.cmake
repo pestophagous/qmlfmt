@@ -28,17 +28,17 @@ find_path(QT_CREATOR_SRC "qtcreator.pro" DOC "Path to Qt Creator source")
 
 include(ExternalProject)
 
-if(NOT QT_CREATOR_SRC)	
-	ExternalProject_Add(
-		QtCreator
-		URL "https://download.qt.io/official_releases/qtcreator/4.5/4.5.2/qt-creator-opensource-src-4.5.2.tar.gz"
-		UPDATE_COMMAND "${CMAKE_COMMAND}" -E copy "${CMAKE_SOURCE_DIR}/QtCreator/CMakeLists.txt" .
-		CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-               -DCMAKE_ARCHIVE_OUTPUT_DIRECTORY_DEBUG:PATH=Debug
-               -DCMAKE_ARCHIVE_OUTPUT_DIRECTORY_RELEASE:PATH=Release
-               -DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}
-		INSTALL_COMMAND "")
-else()
+# if(NOT QT_CREATOR_SRC)
+# 	ExternalProject_Add(
+# 		QtCreator
+# 		URL "https://download.qt.io/official_releases/qtcreator/4.5/4.5.2/qt-creator-opensource-src-4.5.2.tar.gz"
+# 		UPDATE_COMMAND "${CMAKE_COMMAND}" -E copy "${CMAKE_SOURCE_DIR}/QtCreator/CMakeLists.txt" .
+# 		CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+#                -DCMAKE_ARCHIVE_OUTPUT_DIRECTORY_DEBUG:PATH=Debug
+#                -DCMAKE_ARCHIVE_OUTPUT_DIRECTORY_RELEASE:PATH=Release
+#                -DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}
+# 		INSTALL_COMMAND "")
+# else()
 	ExternalProject_Add(
 		QtCreator
 		SOURCE_DIR ${QT_CREATOR_SRC}
@@ -48,7 +48,7 @@ else()
                -DCMAKE_ARCHIVE_OUTPUT_DIRECTORY_RELEASE:PATH=Release
                -DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}
 		INSTALL_COMMAND "")
-endif()
+# endif()
 
 ExternalProject_Get_Property(QtCreator SOURCE_DIR)
 ExternalProject_Get_Property(QtCreator BINARY_DIR)
@@ -75,5 +75,5 @@ file(MAKE_DIRECTORY "${SOURCE_DIR}/src/libs/")
 file(MAKE_DIRECTORY "${SOURCE_DIR}/src/libs/3rdparty/")
 
 set_property(TARGET qmljs PROPERTY INTERFACE_INCLUDE_DIRECTORIES "${SOURCE_DIR}/src/libs/3rdparty/" "${SOURCE_DIR}/src/libs/")
-set_property(TARGET qmljs PROPERTY INTERFACE_COMPILE_DEFINITIONS 
+set_property(TARGET qmljs PROPERTY INTERFACE_COMPILE_DEFINITIONS
 	"QML_BUILD_STATIC_LIB" "QT_CREATOR" "_CRT_SECURE_NO_WARNINGS" "QTCREATOR_UTILS_STATIC_LIB" "CPLUSPLUS_BUILD_LIB" "LANGUAGEUTILS_BUILD_STATIC_LIB")
