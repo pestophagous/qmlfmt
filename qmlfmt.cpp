@@ -65,7 +65,11 @@ int QmlFmt::InternalRun(QIODevice& input, const QString& path)
         return 1;
     }
 
-    const QString reformatted = QmlJS::reformat(document);
+    // (based on my reading of QtCreator/src/libs/qmljs/qmljscodeformatter.cpp)
+    // apparently tabSize is only used if a '\t' character is found. any '\t'
+    // will be expanded into |tabSize| many space characters.
+    const QString reformatted =
+        QmlJS::reformat(document, 2 /*indentSize*/, 2 /*tabSize*/);
     if (source == reformatted)
         return 0;
 
